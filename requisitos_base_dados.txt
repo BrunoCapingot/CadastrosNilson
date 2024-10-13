@@ -1,0 +1,3 @@
+Cliente Antonio Helrigel
+Problema -->> O algoritmo esta lendo todas as parcelas dele na tabela dados pagamento, elas sao separadas por unidade.
+Resultado -->> Maior valor cadastrado sempre

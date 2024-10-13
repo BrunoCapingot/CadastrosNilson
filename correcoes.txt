@@ -1,0 +1,18 @@
+nome_cliente ->> Tabela :: Padrao || Conferido
+unidade ->> Tabela :: Padrao || Conferido
+andar ->> Calculo :: Afetado || Conferido
+Torre ->> Calculo :: Afetado || Conferido
+status_unidade ->> Tabela :: Padrao || Conferido
+total_recebido ->> Tabela :: Padrao || Conferido
+saldo_atrasado ->> Tabela :: Padrao || Conferido
+saldo_a_vencer ->> Calculo :: Afetado || Conferido
+parcelas_vencidas ->> Calculo :: Afetado || Conferido // Verificar casos especiais
+parcelas_a_vencer ->> Calculo :: Afetado || Conferido
+parcelas_chaves ->> Calculo :: Afetado || Conferido
+total ->> Calculo :: Afetado || Conferido
+
+total = vencido + a vencer + chaves
+
+Dados a serem modificados
+
+
