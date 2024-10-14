@@ -18,7 +18,22 @@ class Model:
         self.cnx = mysql.connector.connect(host=localBanco, user=usuario, passwd=password, db=dbname, connection_timeout=5000)
         self.cursor = self.cnx.cursor()
 
-    def get_csv_table_geral_clientes_2025(self):
+    def insert_table_csv_estoque_disponivel_com_valores(self,estoque_torre,estoque_unidade,estoque_quartos,estoque_valor_venda):
+        self.cursor.execute(f"insert into table_csv_estoque_disponivel_com_valores (estoque_torre,estoque_unidade,estoque_quartos,estoque_valor_venda)VALUES('{estoque_torre}','{estoque_unidade}','{estoque_quartos}','{estoque_valor_venda}')")
+        dado = self.cursor.fetchall()
+        self.cnx.commit()
+
+    def get_excel_estoque_cotas_disponiveis_novo(self):
+        suport_list = list()
+        data_base_estoque_disponivel = pd.read_excel(r'C:\Users\CPGT\Desktop\CadastrosNilson\planilias\estoque cotas disponiveis_novo.xlsx')
+        for index, row in data_base_estoque_disponivel.iterrows():
+            estoque_torre = row['torre']
+            estoque_unidade = row['unidade']
+            estoque_quartos = row['quartos']
+            estoque_valor_venda = row['valor venda']
+            suport_list.append(dict(index=index, estoque_torre=estoque_torre, estoque_unidade=estoque_unidade,estoque_quartos=estoque_quartos, estoque_valor_venda=estoque_valor_venda))
+        return suport_list
+    def get_csv_geral_clientes_2025(self):
         dt_list = list()
         csv_table = pd.read_excel(r'C:\Users\CPGT\Desktop\CadastrosNilson\planilias\GeralClientes2025.xlsx')
         for index, row in csv_table.iterrows():
@@ -292,8 +307,10 @@ class Model:
 
 
 
-
-
+    def insert_into_disponiveis(self,unidade_nome,unidade_localizacao,unidade_valor,unidade_quantidade_quartos):
+        self.cursor.execute(f"insert into table_disponiveis (unidade_nome,unidade_localizacao,unidade_valor,unidade_quantidade_quartos)VALUES('{unidade_nome}','{unidade_localizacao}','{unidade_valor}','{unidade_quantidade_quartos}')")
+        dado = self.cursor.fetchall()
+        self.cnx.commit()
 
     def insert_into_relfinal(self,condominio,unidade,numerocontrato,andar,torre,statusunidade,totalrecebido,saldoatrasado,saldoavencer,parcelasvencidas,parcelasavencer,total,parcelachave,quantidadedisponiveis,nome_cliente,inadimplencia,qtd_quarto,recebivel):
         self.cursor.execute(f"INSERT INTO relfinal(condominio,unidade,numerocontrato,andar,torre,statusunidade,totalrecebido,saldoatrasado,saldoavencer,parcelasvencidas,parcelasavencer,total,parcelachave,quantidadedisponiveis,nome_cliente,inadimplencia,qtd_quarto,recebivel)VALUES({condominio},{unidade},{numerocontrato},{andar},{torre},{statusunidade},{totalrecebido},{saldoatrasado},{saldoavencer},{parcelasvencidas},{parcelasavencer},{total},{parcelachave},{quantidadedisponiveis},{nome_cliente},{inadimplencia},{qtd_quarto},{recebivel})")
