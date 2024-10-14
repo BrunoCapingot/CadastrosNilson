@@ -18,10 +18,18 @@ class Model:
         self.cnx = mysql.connector.connect(host=localBanco, user=usuario, passwd=password, db=dbname, connection_timeout=5000)
         self.cursor = self.cnx.cursor()
 
+
+    def insert_table_csv_clientes_cadastrados(self,cliente_codigo,cliente_nome,cliente_cpf_cnpj,cliente_endereco,cliente_cep,cliente_cidade,cliente_uf ,cliente_indexacao,cliente_status):
+        self.cursor.execute(f"insert into table_csv_clientes_cadastrados (cliente_codigo,cliente_nome,cliente_cpf_cnpj,cliente_endereco,cliente_cep,cliente_cidade ,cliente_uf ,cliente_indexacao,cliente_status)VALUES('{estoque_torre}','{estoque_unidade}','{estoque_quartos}','{estoque_valor_venda}')")
+        dado = self.cursor.fetchall()
+        self.cnx.commit()
+
+
     def insert_table_csv_estoque_disponivel_com_valores(self,estoque_torre,estoque_unidade,estoque_quartos,estoque_valor_venda):
         self.cursor.execute(f"insert into table_csv_estoque_disponivel_com_valores (estoque_torre,estoque_unidade,estoque_quartos,estoque_valor_venda)VALUES('{estoque_torre}','{estoque_unidade}','{estoque_quartos}','{estoque_valor_venda}')")
         dado = self.cursor.fetchall()
         self.cnx.commit()
+
 
     def get_excel_estoque_cotas_disponiveis_novo(self):
         suport_list = list()
@@ -33,6 +41,7 @@ class Model:
             estoque_valor_venda = row['valor venda']
             suport_list.append(dict(index=index, estoque_torre=estoque_torre, estoque_unidade=estoque_unidade,estoque_quartos=estoque_quartos, estoque_valor_venda=estoque_valor_venda))
         return suport_list
+
     def get_csv_geral_clientes_2025(self):
         dt_list = list()
         csv_table = pd.read_excel(r'C:\Users\CPGT\Desktop\CadastrosNilson\planilias\GeralClientes2025.xlsx')
@@ -66,7 +75,7 @@ class Model:
                 dia_vencimento_parcela=str(row['Dia Venc Parcela']),
                 total_recebido=str(row['Total Recebido']),
                 total_a_receber=str(row['Total a Receber']),
-                
+
                 janeiro_2017=str(row['01/01/2017']),
                 fevereiro_2017=str(row['01/02/2017']),
                 marco_2017=str(row['01/03/2017']),
@@ -170,7 +179,7 @@ class Model:
                 outubro_2024=str(row['01/10/2024']),
                 novembro_2024=str(row['01/11/2024']),
                 dezembro_2024=str(row['01/12/2024']),
-                
+
                 janeiro_2025=str(row['01/01/2025']),
                 fevereiro_2025=str(row['01/02/2025']),
                 marco_2025=str(row['01/03/2025']),
@@ -183,7 +192,7 @@ class Model:
                 outubro_2025=str(row['01/10/2025']),
                 novembro_2025=str(row['01/11/2025']),
                 dezembro_2025=str(row['01/12/2025']),
-                
+
                 janeiro_2026=str(row['01/01/2026']),
                 fevereiro_2026=str(row['01/02/2026']),
                 marco_2026=str(row['01/03/2026']),
@@ -196,7 +205,7 @@ class Model:
                 outubro_2026=str(row['01/10/2026']),
                 novembro_2026=str(row['01/11/2026']),
                 dezembro_2026=str(row['01/12/2026']),
-                
+
                 janeiro_2027=str(row['01/01/2027']),
                 fevereiro_2027=str(row['01/02/2027']),
                 marco_2027=str(row['01/03/2027']),
@@ -209,7 +218,7 @@ class Model:
                 outubro_2027=str(row['01/10/2027']),
                 novembro_2027=str(row['01/11/2027']),
                 dezembro_2027=str(row['01/12/2027']),
-                
+
                 janeiro_2028=str(row['01/01/2028']),
                 fevereiro_2028=str(row['01/02/2028']),
                 marco_2028=str(row['01/03/2028']),

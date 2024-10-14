@@ -9,6 +9,7 @@ from Factory.CadastroCsvBanco.CadastroDadosBancoGerais2023Padronizada import Cad
 from Factory.CadastroCsvBanco.CadastroBancoDadosPagamentoPadrao import CadastroBancoDadosPagamentoPadrao
 from Factory.CadastroCsvBanco.CadastroBancoGeralClientes2025 import CadastroBancoGeralClientes2025
 from Factory.CadastroCsvBanco.CadastroBancoDisponiveis import CadastroBancoDisponiveis
+from Factory.CadastroCsvBanco.CadastroBancoClientesCadastrados import CadastroBancoClientesCadastrados
 
 from Factory.TestesComBanco import TestesComBanco
 
@@ -23,6 +24,9 @@ class Factory:
 
     def cadastro_site_disponivels(self,datalist,Model,View):
         return [CadastroBancoDisponiveis(nome='CadastroBancoDisponiveis', prioridade=9,datalist=datalist, Model=Model, View=View)]
+
+    def cadastro_clientes_cadastrados(self,datalist,Model,View):
+        return [CadastroBancoClientesCadastrados(nome='CadastroBancoClientesCadastrados', prioridade=9,datalist=datalist, Model=Model, View=View)]
 
     def cadastro_banco_csv_table_geral_2025(self, datalist, Model, View):
         return [CadastroBancoGeralClientes2025(nome='CadastroBancoGeralClientes2025', prioridade=9, datalist=datalist['csv_table'], Model=Model, View=View)]
