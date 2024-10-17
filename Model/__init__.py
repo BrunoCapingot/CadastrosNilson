@@ -3,10 +3,10 @@ import datetime
 import mysql.connector
 import pandas as pd
 
-
-class Model:
+class Model():
 
     def __init__(self):
+        super().__init__()
         dbname = "plannextsistem"
         #dbname = "cadastrosnilson"
         usuario = "plannextsistem"
@@ -18,9 +18,16 @@ class Model:
         self.cnx = mysql.connector.connect(host=localBanco, user=usuario, passwd=password, db=dbname, connection_timeout=5000)
         self.cursor = self.cnx.cursor()
 
+    def insert_table_inadiplentes(self,cliente_codigo,cliente_nome,cpf_cnpj,cliente_unidade,cliente_status,unidade_contrato,unidade_andar,unidade_torre,parcela_chave,parcela_valor,parcelas_pagas,parcelas_vencidas,parcelas_nao_vencidas):
+
+        self.cursor.execute(f"INSERT INTO table_inadiplentes(cliente_codigo,cliente_nome,cpf_cnpj,cliente_unidade,cliente_status,unidade_contrato,unidade_andar,unidade_torre,parcela_chave,parcela_valor,parcelas_pagas,parcelas_vencidas,parcelas_nao_vencidas)"
+        f"VALUES('{cliente_codigo}','{cliente_nome}','{cpf_cnpj}','{cliente_unidade}','{cliente_status}','{unidade_contrato}','{unidade_andar}','{unidade_torre}','{parcela_chave}','{parcela_valor}','{parcelas_pagas}','{parcelas_vencidas}','{parcelas_nao_vencidas}');")
+        dado = self.cursor.fetchall()
+        self.cnx.commit()
 
     def insert_table_csv_clientes_cadastrados(self,cliente_codigo,cliente_nome,cliente_cpf_cnpj,cliente_endereco,cliente_cep,cliente_cidade,cliente_uf ,cliente_indexacao,cliente_status):
-        self.cursor.execute(f"insert into table_csv_clientes_cadastrados (cliente_codigo,cliente_nome,cliente_cpf_cnpj,cliente_endereco,cliente_cep,cliente_cidade ,cliente_uf ,cliente_indexacao,cliente_status)VALUES('{estoque_torre}','{estoque_unidade}','{estoque_quartos}','{estoque_valor_venda}')")
+        self.cursor.execute(f"insert into table_csv_clientes_cadastrados (cliente_codigo,cliente_nome,cliente_cpf_cnpj,cliente_endereco,cliente_cep,cliente_cidade ,cliente_uf ,cliente_indexacao,cliente_status)VALUES("
+                            f"'{cliente_codigo}','{cliente_nome}','{cliente_cpf_cnpj}','{cliente_endereco}','{cliente_cep}','{cliente_cidade}','{cliente_uf}','{cliente_indexacao}','{cliente_status}')")
         dado = self.cursor.fetchall()
         self.cnx.commit()
 
@@ -30,7 +37,17 @@ class Model:
         dado = self.cursor.fetchall()
         self.cnx.commit()
 
-
+    def get_excel_bangalo_disponiveis_com_valor(self):
+        suport_list = list()
+        data_base_bangalos_disponiveis_com_valor = pd.read_excel(r'C:\Users\CPGT\Desktop\CadastrosNilson\planilias\Bangalo_disponiveis_com_valor.xlsx')
+        for index, row in data_base_bangalos_disponiveis_com_valor.iterrows():
+            estoque_torre = row['torre']
+            estoque_unidade = row['unidade']
+            estoque_quartos = row['quartos']
+            estoque_valor_venda = row['valor venda']
+            suport_list.append(dict(index=index, estoque_torre=estoque_torre, estoque_unidade=estoque_unidade,
+                                    estoque_quartos=estoque_quartos, estoque_valor_venda=estoque_valor_venda))
+        return suport_list
     def get_excel_estoque_cotas_disponiveis_novo(self):
         suport_list = list()
         data_base_estoque_disponivel = pd.read_excel(r'C:\Users\CPGT\Desktop\CadastrosNilson\planilias\estoque cotas disponiveis_novo.xlsx')
@@ -39,7 +56,18 @@ class Model:
             estoque_unidade = row['unidade']
             estoque_quartos = row['quartos']
             estoque_valor_venda = row['valor venda']
-            suport_list.append(dict(index=index, estoque_torre=estoque_torre, estoque_unidade=estoque_unidade,estoque_quartos=estoque_quartos, estoque_valor_venda=estoque_valor_venda))
+            suport_list.append(dict(index=index,estoque_torre=estoque_torre,estoque_unidade=estoque_unidade,estoque_quartos=estoque_quartos,estoque_valor_venda=estoque_valor_venda))
+        return suport_list
+
+    def get_excel_estoque_integral_com_valores(self):
+        suport_list = list()
+        data_base_estoque_disponivel = pd.read_excel(r'C:\Users\CPGT\Desktop\CadastrosNilson\planilias\estoque_integral_com_valores.xlsx')
+        for index, row in data_base_estoque_disponivel.iterrows():
+            unidade_torre = row['torre A']
+            unidade_unidade = row['unidade']
+            unidade_quartos = row['quartos']
+            unidade_valor = row['valor']
+            suport_list.append(dict(unidade_id=index,unidade_torre=unidade_torre,unidade_unidade=unidade_unidade,unidade_quartos=unidade_quartos,unidade_valor=unidade_valor))
         return suport_list
 
     def get_csv_geral_clientes_2025(self):
@@ -321,6 +349,16 @@ class Model:
         dado = self.cursor.fetchall()
         self.cnx.commit()
 
+    def insert_into_csv_bangalo_disponivel_com_valor(self,estoque_unidade,estoque_nome,estoque_valor,estoque_quantidade_quartos):
+        self.cursor.execute(f"insert into table_csv_bangalo_disponivel_com_valor (estoque_unidade,estoque_nome,estoque_valor,estoque_quantidade_quartos)VALUES('{estoque_unidade}','{estoque_nome}','{estoque_valor}','{estoque_quantidade_quartos}')")
+        dado = self.cursor.fetchall()
+        self.cnx.commit()
+
+    def insert_into_estoque_integral_com_valores(self,unidade_torre,unidade_unidade,unidade_quartos,unidade_valor):
+        self.cursor.execute(f"insert into table_csv_estoque_integral_com_valores (unidade_torre,unidade_unidade,unidade_quartos,unidade_valor)VALUES('{unidade_torre}','{unidade_unidade}','{unidade_quartos}','{unidade_valor}')")
+        dado = self.cursor.fetchall()
+        self.cnx.commit()
+
     def insert_into_relfinal(self,condominio,unidade,numerocontrato,andar,torre,statusunidade,totalrecebido,saldoatrasado,saldoavencer,parcelasvencidas,parcelasavencer,total,parcelachave,quantidadedisponiveis,nome_cliente,inadimplencia,qtd_quarto,recebivel):
         self.cursor.execute(f"INSERT INTO relfinal(condominio,unidade,numerocontrato,andar,torre,statusunidade,totalrecebido,saldoatrasado,saldoavencer,parcelasvencidas,parcelasavencer,total,parcelachave,quantidadedisponiveis,nome_cliente,inadimplencia,qtd_quarto,recebivel)VALUES({condominio},{unidade},{numerocontrato},{andar},{torre},{statusunidade},{totalrecebido},{saldoatrasado},{saldoavencer},{parcelasvencidas},{parcelasavencer},{total},{parcelachave},{quantidadedisponiveis},{nome_cliente},{inadimplencia},{qtd_quarto},{recebivel})")
         dado = self.cursor.fetchall()
@@ -361,6 +399,12 @@ class Model:
         self.cnx.commit()
         return dado
 
+    def get_table_csv_estoque_integral_com_valores(self):
+        self.cursor.execute("select * from table_csv_estoque_integral_com_valores")
+        dado = self.cursor.fetchall()
+        self.cnx.commit()
+        return dado
+
 
     def get_table_cvs_relatorio_geral_clientes_2023(self):
         self.cursor.execute("select * from table_cvs_relatorio_geral_clientes_2023")
@@ -393,7 +437,7 @@ class Model:
         self.cnx.commit()
         return dado
 
-    def inserir_dados_no_banco(self, querry_list: list, index) -> list:
+    def inserir_dados_no_banco(self, querry_listlist, index) -> list:
         while querry_list.__len__() != 0:
             self.cursor.execute(querry_list.pop())
             self.cnx.commit()
